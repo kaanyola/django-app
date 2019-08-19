@@ -15,16 +15,59 @@
         <h4>Todo List</h4>
         <hr>
 
-        <form action= "/addTodo" method="POST">
+        <form action="addTodo" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="formGroupExampleInput">ToDo Başlık</label>
                 <input type="text" name="title" class="form-control" id="formGroupExampleInput"
                     placeholder="ToDo Başlığınızı Giriniz">
             </div>
-            <button type="submit" class= "btn btn-danger">Ekle</button>
+            <button type="submit" class="btn btn-danger">Ekle</button>
 
         </form>
+        <hr>
+        {% if todos %}
+        <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Todo Başlık</th>
+                        <th scope="col">Todo Durum</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for todo in todos %}
+                      <tr>
+                          <th scope="row">{{todo.id}}</th>
+                          <td>{{todo.title}}</td>
+                          {% if todo.completed %}
+                            <td>Tamamlandı</td>
+                          {% else %}
+                            <td>Tamamlanmadı</td>
+                          {% endif %}
+                          
+                          <td><a href="/update/{{todo.id}}" class = "btn btn-danger">Güncelle</a></td>
+                          <td><a href="/delete/{{todo.id}}" class = "btn btn-danger">Sil</a></td>
+                      </tr>
+                    {% endfor %}
+                    <!--
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr> -->
+                   
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-danger">
+                Herhangi bir todonuz yok.
+            </div>
+        {% endif %}
+        
     </div>
 
 
